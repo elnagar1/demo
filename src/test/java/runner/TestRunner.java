@@ -2,6 +2,7 @@ package runner;
 
 import cucumber.api.CucumberOptions;
 import utilities.TestBase;
+import utilities.TestBase2;
 
 
 @CucumberOptions(
@@ -11,7 +12,5 @@ import utilities.TestBase;
         ,tags = {"@stop"}
 )
 public class TestRunner extends TestBase {
-    TestRunner(){
-        System.out.println("runner k k k k k k k ");
-    }
+
 }

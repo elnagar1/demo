@@ -22,12 +22,12 @@ public class TestBase2 extends AbstractTestNGCucumberTests {
 	// Sauce Labs Configuration 
 	public static final String USERNAME = LoadProperties.sauceLabsData.getProperty("username"); 
 	public static final String ACCESS_KEY = LoadProperties.sauceLabsData.getProperty("accesskey"); 
-	public static final String sauceURL = "http://"+ USERNAME+":"+ACCESS_KEY
+	public static final String sauceURL = "https://"+ USERNAME+":"+ACCESS_KEY
 	+LoadProperties.sauceLabsData.getProperty("seleniumURL"); 
 	
-	public static String BaseURL = "http://demo.nopcommerce.com" ; 
+	public static String BaseURL = "https://demo.nopcommerce.com" ;
 
-	protected ThreadLocal<RemoteWebDriver> driver = null ; 
+	public static ThreadLocal<RemoteWebDriver> driver = null ;
 
 	@BeforeClass
 	@Parameters(value= {"browser"})
@@ -38,10 +38,10 @@ public class TestBase2 extends AbstractTestNGCucumberTests {
 		caps.setCapability("browserName", browser);
 		
 		// Selenium Grid Local
-		driver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"),caps));
+		//driver.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"),caps));
 		
 		// Run on SauceLabs on Cloud
-		//driver.set(new RemoteWebDriver(new URL(sauceURL),caps));
+		driver.set(new RemoteWebDriver(new URL(sauceURL),caps));
 		
 		getDriver().navigate().to(BaseURL);
 	}

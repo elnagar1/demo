@@ -3,15 +3,19 @@ package steps;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import pages.LoginPage;
-import runner.TestRunner;
+import pages.web.LoginPage;
 import utilities.TestBase;
+import utilities.TestBase2;
 
-public class Login extends TestBase {
+public class NormalOrder1 extends TestBase {
 
     LoginPage loginPage = new LoginPage(driver);
 
-
+    @Given("user is on Login Page")
+    public void user_is_on_Login_Page() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        driver.navigate().to("https://dashboard-dev.shgardi.app/auth/login");
+    }
     @When("insert \"([^\"]*)\" and \"([^\"]*)\" and click sign in")
     public void insert_and_and_click_sign_in(String Email, String Password) throws Throwable {
         // Write code here that turns the phrase above into concrete actions

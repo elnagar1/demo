@@ -1,9 +1,13 @@
 package utilities;
 
 import cucumber.api.testng.AbstractTestNGCucumberTests;
+import data.LoadProperties;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.json.simple.JSONObject;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -26,18 +30,22 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 public class TestBase extends AbstractTestNGCucumberTests {
-    public static WebDriver appiumDriver;
+    public static AppiumDriver appiumDriver;
     public static WebDriver driver;
 
     public static String downloadPath = System.getProperty("user.dir") + "\\Downloads";
 
-
+    // Sauce Labs Configuration
+    public static final String USERNAME = LoadProperties.sauceLabsData.getProperty("username");
+    public static final String ACCESS_KEY = LoadProperties.sauceLabsData.getProperty("accesskey");
+    public static final String sauceURL = "https://"+ USERNAME+":"+ACCESS_KEY
+            +LoadProperties.sauceLabsData.getProperty("seleniumURL");
 
     @BeforeSuite
     @Parameters({"browser"})
     public void startDriver(@Optional("chrome-headless") String browser) throws MalformedURLException {
-        //setUpAppiumDriver();
-        setUpSeleniumDriver(browser);
+        setUpAppiumDriver();
+        //setUpSeleniumDriver(browser);
     }
 
 
@@ -60,16 +68,31 @@ public class TestBase extends AbstractTestNGCucumberTests {
 
 
     private void setUpAppiumDriver() throws MalformedURLException {
+        JSONObject h;
+     DesiredCapabilities caps = new DesiredCapabilities(); // creating an object
 
-        DesiredCapabilities caps = new DesiredCapabilities(); // creating an object
 
-        caps.setCapability(MobileCapabilityType.AUTOMATION_NAME,"UiAutomator2");
+       caps.setCapability(MobileCapabilityType.AUTOMATION_NAME,"UiAutomator2");
         caps.setCapability(MobileCapabilityType.PLATFORM_NAME,"Android");
         caps.setCapability(MobileCapabilityType.PLATFORM_VERSION,"12");
         caps.setCapability(MobileCapabilityType.DEVICE_NAME, "Galaxy A72");
         //caps.setCapability("appPackage", "com.mnasat.nashmi");
         caps.setCapability(MobileCapabilityType.APP, "C:/Users/Lenovo/Downloads/Shgardi/src/main/java/Apk/shgardi_User_v1.84.apk");
         appiumDriver = new AndroidDriver(new URL("http://localhost:4723/wd/hub"), caps);
+       /*
+    MutableCapabilities caps = new MutableCapabilities();
+        caps.setCapability("platformName", "Android");
+        caps.setCapability("browserName", "Chrome");
+        caps.setCapability("appium:deviceName", "Google Pixel 4a (5G) GoogleAPI Emulator");
+        caps.setCapability("appium:platformVersion", "12.0");
+        MutableCapabilities sauceOptions = new MutableCapabilities();
+        sauceOptions.setCapability("appiumVersion", "1.22.1");
+        sauceOptions.setCapability("build", "<your build id>");
+        sauceOptions.setCapability("name", "<your test name>");
+        caps.setCapability("sauce:options", sauceOptions);
+
+        URL url = new URL(sauceURL);
+        appiumDriver = new AndroidDriver(url, caps);*/
     }
 
     private void setUpSeleniumDriver(String browser) {
